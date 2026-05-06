@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SIDREKO — Premium Gaming Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+<body>
+
+<!-- ================================================================
+     LOADING SCREEN
+     Logo file: assets/images/logo.png
+================================================================ -->
+<div id="loading-screen">
+  <div class="loader-bg-grid"></div>
+  <div class="loader-orb lo1"></div>
+  <div class="loader-orb lo2"></div>
+  <div class="loader-inner">
+    <div class="loader-logo-wrap">
+      <div class="loader-ring lr1"></div>
+      <div class="loader-ring lr2"></div>
+      <div class="loader-ring lr3"></div>
+      <div class="loader-logo-glow"></div>
+      <img src="assets/images/logo.png" alt="SIDREKO" class="loader-logo"/>
+    </div>
+    <div class="loader-text">SIDREKO</div>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar"><div class="loader-bar-fill" id="loader-fill"></div></div>
+      <div class="loader-percent" id="loader-percent">0%</div>
+    </div>
+    <div class="loader-tagline">Initializing your arsenal...</div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div id="toast-container"></div>
+
+<!-- Quick View Modal -->
+<div id="quickview-overlay" class="qv-overlay" onclick="closeQuickView()">
+  <div class="qv-modal" onclick="event.stopPropagation()">
+    <button class="qv-close" onclick="closeQuickView()">✕</button>
+    <div id="quickview-content"></div>
+  </div>
+</div>
+
+<!-- Checkout Modal -->
+<div id="checkout-overlay" class="checkout-overlay" onclick="closeCheckout()">
+  <div class="checkout-modal" onclick="event.stopPropagation()">
+    <div id="checkout-content"></div>
+  </div>
+</div>
+
+<!-- ================================================================
+     NAVBAR
+     Logo: assets/images/logo.png  placed LEFT of "SIDREKO" text
+================================================================ -->
+<nav id="navbar">
+  <a class="nav-logo-link" onclick="showPage('home')">
+    <img src="assets/images/logo.png" alt="SIDREKO Logo" class="nav-logo-img"/>
+    <span class="nav-logo-text">SIDREKO</span>
+  </a>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')"    id="nav-home"    class="active-link">Home</a></li>
+    <li><a onclick="showPage('shop')"    id="nav-shop">Shop</a></li>
+    <li><a onclick="showPage('about')"   id="nav-about">About</a></li>
+    <li><a onclick="showPage('contact')" id="nav-contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="nav-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="Search products..." id="search-input" oninput="handleSearch(this.value)"/>
+    </div>
+    <div class="icon-btn" onclick="toggleWishlistPage()" title="Wishlist">♡<span id="wishlist-count" style="font-size:9px;font-family:'Orbitron',monospace;margin-left:2px;">0</span></div>
+    <div class="icon-btn" onclick="handleLogout()" title="Logout" style="font-size:15px;">⏻</div>
+    <div class="icon-btn" onclick="showPage('cart')" title="Cart">🛒<span class="cart-count" id="cart-count">0</span></div>
+  </div>
+</nav>
+
+<!-- ================================================================
+     PAGE: AUTH
+================================================================ -->
+<div id="page-auth" class="page active">
+  <div class="auth-page">
+
+    <!-- LEFT visual panel — logo + rings + stats -->
+    <div class="auth-visual">
+      <div class="auth-orb ao1"></div>
+      <div class="auth-orb ao2"></div>
+      <div class="auth-orb ao3"></div>
+
+      <div class="auth-logo-scene">
+        <div class="auth-ring ar1"></div>
+        <div class="auth-ring ar2"></div>
+        <div class="auth-ring ar3"></div>
+        <div class="auth-logo-glow"></div>
+        <!-- SIDREKO logo, centered in rings -->
+        <img src="assets/images/logo.png" alt="SIDREKO" class="auth-center-logo"/>
+      </div>
+
+      <div class="auth-visual-copy">
+        <h2>Your <span class="grad-text">Ultimate</span><br/>Gaming Store</h2>
+        <p>Exclusive deals, premium gear, and a community built for champions. Sign in and start your journey.</p>
+        <div class="auth-stats-row">
+          <div class="auth-stat-item"><span class="asn">20+</span><span class="asl">Products</span></div>
+          <div class="auth-stat-sep"></div>
+          <div class="auth-stat-item"><span class="asn">50K+</span><span class="asl">Gamers</span></div>
+          <div class="auth-stat-sep"></div>
+          <div class="auth-stat-item"><span class="asn">4.9★</span><span class="asl">Rated</span></div>
+        </div>
+        <div class="auth-dots">
+          <div class="adot active"></div><div class="adot"></div><div class="adot"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT form panel -->
+    <div class="auth-form-panel">
+      <div class="auth-form-inner">
+
+        <!-- Small logo + wordmark above form -->
+        <div class="auth-brand-row">
+          <img src="assets/images/logo.png" alt="SIDREKO" class="auth-brand-logo"/>
+          <span class="auth-brand-text">SIDREKO</span>
+        </div>
+
+        <div class="auth-tabs">
+          <div class="auth-tab active" onclick="switchAuthTab('login',this)">Sign In</div>
+          <div class="auth-tab"        onclick="switchAuthTab('register',this)">Register</div>
+        </div>
+
+        <!-- LOGIN -->
+        <div id="auth-login-form">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" id="login-email" placeholder="you@sidreko.ph"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" id="login-pass" placeholder="••••••••••"/>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:18px;font-size:13px;">
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--text-secondary);">
+              <input type="checkbox" style="accent-color:var(--neon-cyan);"/> Remember me
+            </label>
+            <a href="#" style="color:var(--neon-cyan);text-decoration:none;">Forgot password?</a>
+          </div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:14px;" onclick="handleLogin()">Sign In ⚡</button>
+          <div class="social-login">
+            <div class="social-divider">or continue with</div>
+            <button class="social-btn social-btn-google" onclick="handleSocialLogin('Google')">
+              <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+              Continue with Google
+            </button>
+            <button class="social-btn social-btn-facebook" onclick="handleSocialLogin('Facebook')">
+              <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="#1877F2"/></svg>
+              Continue with Facebook
+            </button>
+          </div>
+        </div>
+
+        <!-- REGISTER -->
+        <div id="auth-register-form" style="display:none;">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" id="reg-fname" placeholder="Juan"/></div>
+            <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" id="reg-lname" placeholder="Dela Cruz"/></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" id="reg-email" placeholder="you@sidreko.ph"/></div>
+          <div class="form-group"><label class="form-label">Password</label><input type="password" class="form-input" id="reg-pass" placeholder="Create a strong password"/></div>
+          <div class="form-group"><label class="form-label">Gamer Tag</label><input type="text" class="form-input" id="reg-tag" placeholder="@YourGamertag"/></div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;margin-bottom:14px;" onclick="handleRegister()">Create Account 🚀</button>
+          <div class="social-login">
+            <div class="social-divider">or register with</div>
+            <button class="social-btn social-btn-google" onclick="handleSocialLogin('Google')">
+              <svg class="social-icon-svg" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+              Continue with Google
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE: HOME
+================================================================ -->
+<div id="page-home" class="page">
+  <section class="hero">
+    <div class="hero-bg-grid"></div>
+    <div class="hero-orbs"><div class="hero-orb"></div><div class="hero-orb"></div><div class="hero-orb"></div></div>
+    <div class="hero-inner">
+      <div class="hero-content reveal-left">
+        <div class="hero-eyebrow">New Season Drop 2026</div>
+        <h1 class="hero-h1"><span class="line-glow">LEVEL UP</span><br/><span>YOUR</span><br/><span class="line-accent">ARSENAL</span></h1>
+        <p class="hero-desc">Discover next-gen gaming gear engineered for champions. From pro controllers to mechanical keyboards — dominate every match.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary btn-lg" onclick="showPage('shop')">⚡ Shop Now</button>
+          <button class="btn btn-outline btn-lg" onclick="scrollToSection('featured')">View Deals</button>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><span class="num">20+</span><span class="lbl">Products</span></div>
+          <div class="hero-stat"><span class="num">50K+</span><span class="lbl">Gamers</span></div>
+          <div class="hero-stat"><span class="num">4.9★</span><span class="lbl">Rating</span></div>
+        </div>
+      </div>
+      <div class="hero-visual reveal-right">
+        <div class="hero-showcase">
+          <div class="showcase-glow"></div>
+          <div class="showcase-ring ring-1"></div>
+          <div class="showcase-ring ring-2"></div>
+          <div class="hero-product-main">
+            <img src="assets/images/logo.png" alt="SIDREKO" class="hero-img-3d"/>
+          </div>
+          <!-- Mini product images — replace src with your own photos -->
+          <div class="hero-product-mini" style="top:8%;left:8%;"><img src="assets/products/featured-1.png" alt="" class="mini-img" onerror="this.outerHTML='<span style=font-size:50px>🎧</span>'"/></div>
+          <div class="hero-product-mini" style="top:14%;right:6%;"><img src="assets/products/featured-2.png" alt="" class="mini-img" onerror="this.outerHTML='<span style=font-size:48px>⌨️</span>'"/></div>
+          <div class="hero-product-mini" style="bottom:14%;left:4%;"><img src="assets/products/featured-3.png" alt="" class="mini-img" onerror="this.outerHTML='<span style=font-size:46px>🖱️</span>'"/></div>
+          <div class="hero-product-mini" style="bottom:8%;right:4%;"><img src="assets/products/featured-4.png" alt="" class="mini-img" onerror="this.outerHTML='<span style=font-size:46px>🎮</span>'"/></div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator"><div class="scroll-mouse"></div><span>Scroll</span></div>
+  </section>
+
+  <!-- CATEGORIES (unchanged) -->
+  <section style="padding:96px 0;background:var(--bg-void);" id="categories">
+    <div class="categories-section">
+      <div class="section-header reveal-up">
+        <span class="section-eyebrow">Browse by Type</span>
+        <h2 class="section-title">Shop <span>Categories</span></h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="categories-grid">
+        <div class="category-card reveal-up" style="--delay:0.05s" onclick="filterShop('Mouse')"><span class="category-icon">🖱️</span><div class="category-name">Mouse</div><div class="category-count">5 products</div></div>
+        <div class="category-card reveal-up" style="--delay:0.1s"  onclick="filterShop('Keyboards')"><span class="category-icon">⌨️</span><div class="category-name">Keyboards</div><div class="category-count">4 products</div></div>
+        <div class="category-card reveal-up" style="--delay:0.15s" onclick="filterShop('Headsets')"><span class="category-icon">🎧</span><div class="category-name">Headsets</div><div class="category-count">4 products</div></div>
+        <div class="category-card reveal-up" style="--delay:0.2s"  onclick="filterShop('Controllers')"><span class="category-icon">🎮</span><div class="category-name">Controllers</div><div class="category-count">4 products</div></div>
+        <div class="category-card reveal-up" style="--delay:0.25s" onclick="filterShop('Accessories')"><span class="category-icon">🕹️</span><div class="category-name">Accessories</div><div class="category-count">3 products</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PRODUCTS -->
+  <section class="featured-section" id="featured">
+    <div class="featured-inner">
+      <div class="section-header reveal-up">
+        <span class="section-eyebrow">Editor's Picks</span>
+        <h2 class="section-title">Featured <span>Products</span></h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="products-grid" id="home-products-grid"></div>
+      <div style="text-align:center;margin-top:44px;"><button class="btn btn-outline" onclick="showPage('shop')">View All Products →</button></div>
+    </div>
+  </section>
+
+  <!-- PROMO BANNER -->
+  <section class="promo-section">
+    <div class="promo-banner reveal-up">
+      <div class="promo-bg-lines"></div><div class="promo-glow"></div>
+      <div class="promo-content">
+        <span class="promo-tag">🔥 Limited Time Offer</span>
+        <h2 class="promo-title">Arctis Nova Pro Wireless<br/><span class="grad-text">Gaming Headset Deal</span></h2>
+        <p class="promo-desc">Premium hi-fi sound with active noise cancellation and dual wireless. Experience audio like never before.</p>
+        <div class="promo-countdown">
+          <div class="countdown-block"><span class="countdown-num" id="cd-h">08</span><span class="countdown-lbl">Hours</span></div>
+          <div class="countdown-block"><span class="countdown-num" id="cd-m">47</span><span class="countdown-lbl">Mins</span></div>
+          <div class="countdown-block"><span class="countdown-num" id="cd-s">32</span><span class="countdown-lbl">Secs</span></div>
+        </div>
+        <button class="btn btn-primary" onclick="addToCartById(10)">Grab the Deal — ₱3,499.00</button>
+      </div>
+      <!-- PROMO IMAGE — replace: assets/products/promo-headset.png -->
+      <div class="promo-visual">
+        <img src="assets/products/promo-headset.png" alt="Gaming Headset"
+             onerror="this.outerHTML='<span style=\'font-size:110px;animation:heroFloat 4s ease-in-out infinite;\'>🎧</span>'"/>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS (Taglish — kept as-is) -->
+  <section class="testimonials-section">
+    <div class="testimonials-inner">
+      <div class="section-header reveal-up">
+        <span class="section-eyebrow">Sinasabi ng mga Gamer</span>
+        <h2 class="section-title">Player <span>Reviews</span></h2>
+        <div class="section-divider"></div>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal-up" style="--delay:0.05s"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"Grabe yung kalidad ng controller na binili ko. Solid build, responsive ang buttons, at hindi pa nanghihina battery. Sulit na sulit sa presyo!"</p><div class="testimonial-author"><div class="author-avatar">AX</div><div><div class="author-name">Alex Reyes</div><div class="author-handle">@axreyes_gamer</div></div></div></div>
+        <div class="testimonial-card reveal-up" style="--delay:0.1s"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"Mabilis ang delivery, secured yung packaging. Yung mechanical keyboard na order ko, feeling ko mas magaling na akong mag-type. Totoo 'to, hindi joke."</p><div class="testimonial-author"><div class="author-avatar">SV</div><div><div class="author-name">Sofia Villanueva</div><div class="author-handle">@sofiatv_gaming</div></div></div></div>
+        <div class="testimonial-card reveal-up" style="--delay:0.15s"><div class="testimonial-stars">★★★★☆</div><p class="testimonial-text">"Finally may gaming store na nakaka-gets sa amin! Malawak ang selection, patas ang presyo, at sumasagot talaga ang customer support. 10/10!"</p><div class="testimonial-author"><div class="author-avatar">KR</div><div><div class="author-name">Karl Rodrigo</div><div class="author-handle">@karlrfps</div></div></div></div>
+        <div class="testimonial-card reveal-up" style="--delay:0.08s"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"Binili ko yung gaming headset — OMG ang ganda ng audio! Naramdaman ko na parang nasa loob na ako ng laro. Legit na legit."</p><div class="testimonial-author"><div class="author-avatar">JM</div><div><div class="author-name">Janine Morales</div><div class="author-handle">@jmorales_plays</div></div></div></div>
+        <div class="testimonial-card reveal-up" style="--delay:0.12s"><div class="testimonial-stars">★★★★☆</div><p class="testimonial-text">"Nag-order ako ng gaming mouse dito. Ang bilis ng shipping — 2 days lang! Ultra responsive. Inangat ng malaki yung game ko."</p><div class="testimonial-author"><div class="author-avatar">RD</div><div><div class="author-name">Rico Domingo</div><div class="author-handle">@ricoD_esports</div></div></div></div>
+        <div class="testimonial-card reveal-up" style="--delay:0.18s"><div class="testimonial-stars">★★★★★</div><p class="testimonial-text">"Yung monitor na binili ko, grabe yung refresh rate — mata ko ang nahirapan, hindi yung laro. 😂 Certified pogi ang setup ko ngayon!"</p><div class="testimonial-author"><div class="author-avatar">MC</div><div><div class="author-name">Miguel Castillo</div><div class="author-handle">@migcastillo_yt</div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <!-- Footer: logo LEFT of "SIDREKO" text -->
+          <div class="footer-logo-row">
+            <img src="assets/images/logo.png" alt="SIDREKO" class="footer-logo-img"/>
+            <span class="footer-logo-text">SIDREKO</span>
+          </div>
+          <p>The premium destination for Filipino gamers who demand the best. Top-tier gear, fast delivery, and legendary support.</p>
+          <div class="footer-social">
+            <div class="footer-social-btn">𝕏</div>
+            <div class="footer-social-btn">📘</div>
+            <div class="footer-social-btn">📸</div>
+            <div class="footer-social-btn">📺</div>
+          </div>
+        </div>
+        <div class="footer-col"><h4>Shop</h4><ul><li><a onclick="showPage('shop')">New Arrivals</a></li><li><a onclick="showPage('shop')">Best Sellers</a></li><li><a onclick="showPage('shop')">Deals &amp; Offers</a></li><li><a onclick="showPage('shop')">Pre-orders</a></li></ul></div>
+        <div class="footer-col"><h4>Support</h4><ul><li><a href="#">FAQ</a></li><li><a href="#">Shipping Policy</a></li><li><a href="#">Returns</a></li><li><a href="#">Track Order</a></li></ul></div>
+        <div class="footer-col"><h4>Company</h4><ul><li><a onclick="showPage('about')">About Us</a></li><li><a onclick="showPage('contact')">Contact</a></li><li><a href="#">Careers</a></li><li><a href="#">Privacy Policy</a></li></ul></div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copy">© 2026 SIDREKO Gaming Store. All rights reserved.</span>
+        <div class="footer-payments">
+          <span class="payment-badge gcash">GCash</span>
+          <span class="payment-badge paypal">PayPal</span>
+          <span class="payment-badge maya">Maya</span>
+          <span class="payment-badge cod">COD</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div><!-- /page-home -->
+
+<!-- ================================================================
+     PAGE: SHOP
+================================================================ -->
+<div id="page-shop" class="page">
+  <div class="shop-page">
+    <div class="shop-header-bar"><div style="max-width:1280px;margin:0 auto;"><h1>🛍️ Shop All Products</h1><div class="page-breadcrumb">Home <span>›</span> <span>Shop</span></div></div></div>
+    <div class="shop-layout">
+      <aside class="shop-sidebar">
+        <div class="filter-group">
+          <div class="filter-title">Category</div>
+          <div class="filter-option active" onclick="toggleFilter(this,'all')"><div class="filter-checkbox">✓</div><span class="filter-label">All Products</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'Mouse')"><div class="filter-checkbox"></div><span class="filter-label">Mouse</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'Keyboards')"><div class="filter-checkbox"></div><span class="filter-label">Keyboards</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'Headsets')"><div class="filter-checkbox"></div><span class="filter-label">Headsets</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'Controllers')"><div class="filter-checkbox"></div><span class="filter-label">Controllers</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'Accessories')"><div class="filter-checkbox"></div><span class="filter-label">Accessories</span></div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-title">Brand</div>
+          <div class="filter-option active" onclick="toggleFilter(this,'all')"><div class="filter-checkbox">✓</div><span class="filter-label">All Brands</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'Razer')"><div class="filter-checkbox"></div><span class="filter-label">Razer</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'SteelSeries')"><div class="filter-checkbox"></div><span class="filter-label">SteelSeries</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'Logitech G')"><div class="filter-checkbox"></div><span class="filter-label">Logitech G</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'Corsair')"><div class="filter-checkbox"></div><span class="filter-label">Corsair</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'Sony')"><div class="filter-checkbox"></div><span class="filter-label">Sony</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'HyperX')"><div class="filter-checkbox"></div><span class="filter-label">HyperX</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'Microsoft')"><div class="filter-checkbox"></div><span class="filter-label">Microsoft</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'ASUS ROG')"><div class="filter-checkbox"></div><span class="filter-label">ASUS ROG</span></div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-title">Price Range</div>
+          <div class="price-range">
+            <input type="range" class="price-slider" min="0" max="6000" value="6000" oninput="updatePrice(this)"/>
+            <div class="price-labels"><span>₱0</span><span id="price-max">₱6,000</span></div>
+          </div>
+        </div>
+        <div class="filter-group">
+          <div class="filter-title">Rating</div>
+          <div class="filter-option" onclick="toggleFilter(this,'5star')"><div class="filter-checkbox"></div><span class="filter-label">★★★★★ 5 Stars</span></div>
+          <div class="filter-option" onclick="toggleFilter(this,'4star')"><div class="filter-checkbox"></div><span class="filter-label">★★★★☆ 4+ Stars</span></div>
+        </div>
+      </aside>
+      <div class="shop-main">
+        <div class="shop-toolbar">
+          <div class="shop-count" id="shop-count-text">Showing <strong>20</strong> products</div>
+          <select class="shop-sort" onchange="sortProducts(this.value)">
+            <option value="featured">Sort: Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Best Rated</option>
+          </select>
+        </div>
+        <div class="shop-grid" id="shop-products-grid"></div>
+      </div>
+    </div>
+  </div>
+  <footer><div class="footer-inner"><div class="footer-bottom"><span class="footer-copy">© 2026 SIDREKO Gaming Store.</span><div class="footer-payments"><span class="payment-badge gcash">GCash</span><span class="payment-badge paypal">PayPal</span><span class="payment-badge maya">Maya</span><span class="payment-badge cod">COD</span></div></div></div></footer>
+</div>
+
+<!-- ================================================================
+     PAGE: PRODUCT DETAIL
+================================================================ -->
+<div id="page-product" class="page">
+  <div class="product-detail-page">
+    <div class="product-detail-inner" id="product-detail-content"></div>
+    <section class="reviews-section">
+      <div class="section-header" style="text-align:left;margin-bottom:28px;">
+        <span class="section-eyebrow">Community Feedback</span>
+        <h2 class="section-title" style="font-size:22px;">Customer <span>Reviews</span></h2>
+      </div>
+      <div class="review-card"><div class="review-header"><div><div class="reviewer-name">Marcus T.</div><div class="stars" style="color:var(--neon-gold);font-size:12px;">★★★★★</div></div><div class="review-date">March 12, 2026</div></div><div class="review-text">Sobrang ganda ng product! Build quality is top-notch at hindi nakakapadpad ang presyo. Inirecommend ko na agad sa mga kaibigan ko.</div></div>
+      <div class="review-card"><div class="review-header"><div><div class="reviewer-name">Yuki S.</div><div class="stars" style="color:var(--neon-gold);font-size:12px;">★★★★☆</div></div><div class="review-date">February 28, 2026</div></div><div class="review-text">Maganda overall yung product. Minus one star lang kasi medyo matagal nag-reply yung support, pero nung nakausap ko na sila — solved agad.</div></div>
+      <div class="review-card"><div class="review-header"><div><div class="reviewer-name">Carlo R.</div><div class="stars" style="color:var(--neon-gold);font-size:12px;">★★★★★</div></div><div class="review-date">January 15, 2026</div></div><div class="review-text">Exactly what I needed para sa competitive gaming ko. Dumating sa 2 days! Mabilis pa sa pizza delivery. 🍕</div></div>
+    </section>
+  </div>
+  <footer><div class="footer-inner"><div class="footer-bottom"><span class="footer-copy">© 2026 SIDREKO Gaming Store.</span></div></div></footer>
+</div>
+
+<!-- ================================================================
+     PAGE: CART
+================================================================ -->
+<div id="page-cart" class="page">
+  <div class="cart-page">
+    <div class="cart-inner">
+      <div class="page-header" style="padding:38px 0 28px;"><h1>🛒 Your Cart</h1><div class="page-breadcrumb">Home <span>›</span> <span>Cart</span></div></div>
+      <div id="cart-content"></div>
+    </div>
+  </div>
+  <footer><div class="footer-inner"><div class="footer-bottom"><span class="footer-copy">© 2026 SIDREKO Gaming Store.</span><div class="footer-payments"><span class="payment-badge gcash">GCash</span><span class="payment-badge paypal">PayPal</span><span class="payment-badge maya">Maya</span><span class="payment-badge cod">COD</span></div></div></div></footer>
+</div>
+
+<!-- ================================================================
+     PAGE: ABOUT
+================================================================ -->
+<div id="page-about" class="page">
+  <div class="about-page">
+    <div class="about-hero">
+      <div class="hero-bg-grid" style="opacity:0.45;"></div>
+      <div class="hero-orbs"><div class="hero-orb"></div><div class="hero-orb" style="left:unset;right:-100px;background:var(--neon-blue);"></div></div>
+      <div class="about-hero-content">
+        <span class="section-eyebrow" style="margin-bottom:14px;display:block;">Our Story</span>
+        <h1>Built by <span class="grad-text">Gamers</span>,<br/>For Gamers</h1>
+        <p>Founded in 2022, SIDREKO was born from a simple idea: gamers deserve a store that truly understands them. No filler, no fluff — just the best gear, delivered to your door.</p>
+      </div>
+    </div>
+    <div class="about-section">
+
+  
+      <div class="about-grid">
+        <div class="about-photo-block">
+          <div class="about-photo-wrap">
+            <img
+              src="assets/team/group-photo.png"
+              alt="SIDREKO Team Group Photo"
+              class="about-group-img"
+              onerror="this.style.display='none'; document.getElementById('gp-fallback').style.display='flex';"/>
+ 
+          </div>
+        </div>
+        <div class="about-text">
+          <h2>The <span style="color:var(--neon-cyan);">SIDREKO</span> Story</h2>
+          <p>We started as a small group of students at Pamantasan ng Lungsod ng San Pablo with one shared dream: to bring world-class gaming gear to Filipino gamers at fair prices.</p>
+          <p>Today, we serve hundreds of customers across the Philippines and continue to grow. Every product in our catalog is personally tested by our team before it goes live on the site.</p>
+          <p>Our community of 50,000+ players is our greatest achievement. When they win, we win.</p>
+          <button class="btn btn-primary" style="margin-top:8px;" onclick="showPage('contact')">Get in Touch →</button>
+        </div>
+      </div>
+
+      <div class="mv-grid">
+        <div class="mv-card"><span class="mv-icon">🎯</span><h3>Our Mission</h3><p>To provide every Filipino gamer with access to professional-grade gaming equipment at honest, accessible prices — regardless of budget or location.</p></div>
+        <div class="mv-card"><span class="mv-icon">🌐</span><h3>Our Vision</h3><p>A Philippines where every gamer has the tools to compete at the highest level, locally and internationally, supported by a thriving gaming community.</p></div>
+        <div class="mv-card"><span class="mv-icon">⚡</span><h3>Innovation First</h3><p>We work alongside top hardware engineers and pro players to identify emerging technology before it goes mainstream. Find tomorrow's gear here, today.</p></div>
+        <div class="mv-card"><span class="mv-icon">🤝</span><h3>Community Driven</h3><p>Our product recommendations and curation are powered by real feedback from real players. No sponsored rankings, no paid placements — only honest picks.</p></div>
+      </div>
+
+      <!-- TEAM -->
+      <div class="section-header reveal-up">
+        <span class="section-eyebrow">The People Behind SIDREKO</span>
+        <h2 class="section-title">Meet the <span>Team</span></h2>
+        <div class="section-divider"></div>
+      </div>
+      
+      <div class="team-grid" style="margin-top:46px;">
+        <div class="team-card reveal-up" style="--delay:0.05s"><div class="team-avatar-wrap"><div class="team-avatar-img" style="background:linear-gradient(135deg,#2979ff,#b829f5);"><img src="assets/team/Charles.jpg" class="team-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><span class="team-avatar-initials">JH</span></div><div class="team-avatar-ring"></div></div><div class="team-name">Charles Cedrick C. Oruga</div><div class="team-role">CEO &amp; Co-Founder</div><p class="team-bio">Former esports athlete turned entrepreneur. Played Blox Strike competitively for 6 years before founding SIDREKO.</p></div>
+        <div class="team-card reveal-up" style="--delay:0.08s"><div class="team-avatar-wrap"><div class="team-avatar-img" style="background:linear-gradient(135deg,#00e5ff,#2979ff);"><img src="assets/team/Frankie.png" class="team-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><span class="team-avatar-initials">MC</span></div><div class="team-avatar-ring"></div></div><div class="team-name">Frankie Brent A. Duro</div><div class="team-role">Project Manager</div><p class="team-bio">UI/UX visionary with 10+ years in tech product design. Creates interfaces that look and feel exceptional.</p></div>
+        <div class="team-card reveal-up" style="--delay:0.11s"><div class="team-avatar-wrap"><div class="team-avatar-img" style="background:linear-gradient(135deg,#b829f5,#ff2d78);"><img src="assets/team/Dave.png" class="team-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><span class="team-avatar-initials">RT</span></div><div class="team-avatar-ring"></div></div><div class="team-name">Dave C. De Mesa</div><div class="team-role">Head of Product</div><p class="team-bio">Hardware enthusiast and speedrunner. Personally tests every product before it goes live on SIDREKO.</p></div>
+        <div class="team-card reveal-up" style="--delay:0.14s"><div class="team-avatar-wrap"><div class="team-avatar-img" style="background:linear-gradient(135deg,#ff2d78,#b829f5);"><img src="assets/team/Ian.png" class="team-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><span class="team-avatar-initials">SA</span></div><div class="team-avatar-ring"></div></div><div class="team-name">Philip Jhon Ian M. Oasin</div><div class="team-role">Marketing Director</div><p class="team-bio">Digital marketing expert with deep knowledge of gaming culture. The reason SIDREKO is a known brand nationwide.</p></div>
+        <div class="team-card reveal-up" style="--delay:0.17s"><div class="team-avatar-wrap"><div class="team-avatar-img" style="background:linear-gradient(135deg,#2979ff,#00e5ff);"><img src="assets/team/Rafael.png" class="team-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><span class="team-avatar-initials">KR</span></div><div class="team-avatar-ring"></div></div><div class="team-name">Rafael E. Bendiola</div><div class="team-role">Social Manager</div><p class="team-bio">Passionate Social Media Manager of SIDREKO, dedicated to building a strong gaming community through creative content and innovative digital strategies.</p></div>
+        <div class="team-card reveal-up" style="--delay:0.2s"><div class="team-avatar-wrap"><div class="team-avatar-img" style="background:linear-gradient(135deg,#ffaa00,#ff2d78);"><img src="assets/team/Jhimwel.png" class="team-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><span class="team-avatar-initials">JD</span></div><div class="team-avatar-ring"></div></div><div class="team-name">Jhimwel B. Barcarse</div><div class="team-role">Customer Success Lead</div><p class="team-bio">The voice of SIDREKO. Ensures every customer is happy and well taken care of — no complaint goes unanswered.</p></div>
+        <div class="team-card reveal-up" style="--delay:0.23s"><div class="team-avatar-wrap"><div class="team-avatar-img" style="background:linear-gradient(135deg,#00e5ff,#b829f5);"><img src="assets/team/Keith.png" class="team-photo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><span class="team-avatar-initials">MB</span></div><div class="team-avatar-ring"></div></div><div class="team-name">Keith Geybrielle O. Chosaz</div><div class="team-role">Logistics &amp; Operations</div><p class="team-bio">Ensures every order arrives on time and in perfect condition. Guardian of the supply chain from warehouse to doorstep.</p></div>
+      </div>
+    </div>
+    <footer><div class="footer-inner"><div class="footer-bottom"><span class="footer-copy">© 2026 SIDREKO Gaming Store.</span></div></div></footer>
+  </div>
+</div>
+
+<!-- ================================================================
+     PAGE: CONTACT
+================================================================ -->
+<div id="page-contact" class="page">
+  <div class="contact-page">
+    <div class="contact-inner">
+      <div class="page-header" style="padding:0 0 46px;">
+        <span class="section-eyebrow" style="margin-bottom:10px;display:block;">Get in Touch</span>
+        <h1 class="section-title">Contact <span>Us</span></h1>
+        <div class="section-divider" style="margin:14px 0 0;"></div>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info">
+          <h2>Let's <span style="color:var(--neon-cyan);">Talk</span></h2>
+          <p>Have a question about an order, a product, or just want to say hello? Our team of gamers is ready to help. Average response time: under 2 hours.</p>
+          <div class="contact-details">
+            <div class="contact-item"><div class="contact-item-icon">✉️</div><div><div class="contact-item-label">Email</div><div class="contact-item-val">support@sidreko.ph</div></div></div>
+            <div class="contact-item"><div class="contact-item-icon">📞</div><div><div class="contact-item-label">Phone</div><div class="contact-item-val">+63 (049) 555-1234</div></div></div>
+            <div class="contact-item"><div class="contact-item-icon">📍</div><div><div class="contact-item-label">Address</div><div class="contact-item-val">Pamantasan ng Lungsod ng San Pablo<br/>San Pablo City, Laguna, Philippines</div></div></div>
+            <div class="contact-item"><div class="contact-item-icon">🕐</div><div><div class="contact-item-label">Store Hours</div><div class="contact-item-val">Monday – Saturday: 8:00 AM – 6:00 PM</div></div></div>
+          </div>
+
+          <!-- ════════════════════════════════════════════════
+               GOOGLE MAP — Pamantasan ng Lungsod ng San Pablo
+               Functional embed, dark overlay for theme match.
+               ════════════════════════════════════════════════ -->
+          <div class="contact-map-container">
+            <div class="map-border-glow"></div>
+            <iframe
+              class="contact-map-iframe"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15476.287830503957!2d121.3119997!3d14.0554857!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd5c8554956aaf%3A0x7b1213a951d955c!2sPamantasan%20ng%20Lungsod%20ng%20San%20pablo!5e0!3m2!1sen!2sph!4v1715000000000!5m2!1sen!2sph"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Pamantasan ng Lungsod ng San Pablo — Google Maps">
+            </iframe>
+            <a href="https://www.google.com/maps/place/Pamantasan+ng+Lungsod+ng+San+pablo/@14.0554857,121.3119997,13z"
+               target="_blank" rel="noopener noreferrer" class="map-open-link">
+              Open in Google Maps ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-form-panel">
+          <h2>Send a <span style="color:var(--neon-cyan);">Message</span></h2>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" id="contact-fname" placeholder="Juan"/></div>
+            <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" id="contact-lname" placeholder="Dela Cruz"/></div>
+          </div>
+          <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="contact-email" placeholder="you@example.com"/></div>
+          <div class="form-group"><label class="form-label">Subject</label><input type="text" class="form-input" id="contact-subject" placeholder="Order inquiry, product question..."/></div>
+          <div class="form-group"><label class="form-label">Message</label><textarea class="form-textarea" id="contact-message" placeholder="How can we help you today?"></textarea></div>
+          <button class="btn btn-primary btn-lg" style="width:100%;justify-content:center;" onclick="submitContact()">Send Message ✈️</button>
+        </div>
+      </div>
+    </div>
+    <footer><div class="footer-inner"><div class="footer-bottom"><span class="footer-copy">© 2026 SIDREKO Gaming Store.</span></div></div></footer>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
