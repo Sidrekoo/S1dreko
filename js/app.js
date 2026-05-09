@@ -260,18 +260,14 @@ function showProductDetail(id) {
   const saveHTML  = p.oldPrice ? `<span class="product-detail-price-old">${formatPHP(p.oldPrice)}</span><span class="product-detail-save">Save ${formatPHP(p.oldPrice-p.price)}</span>` : '';
   const stars     = '★'.repeat(Math.floor(p.rating))+(p.rating%1>=0.5?'½':'');
 
-  document.getElementById('product-detail-content').innerHTML = `
+document.getElementById('product-detail-content').innerHTML = `
     <div class="product-detail-gallery">
       <div class="product-main-img">
         <img src="assets/products/product-${p.id}.jpg" alt="${p.name}"
-             onerror="this.style.display='none'; this.parentElement.innerHTML+='<span style=\'font-size:140px;animation:heroFloat 4s ease-in-out infinite;\'>${p.fallbackIcon}</span>'"/>
+             style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;height:80%;object-fit:contain;"
+             onerror="this.style.display='none'; this.parentElement.innerHTML+='<span style=\'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:120px;\'>${p.fallbackIcon}</span>'"/>
       </div>
-      <div class="product-thumbs">
-        <div class="product-thumb active"><img src="assets/products/product-${p.id}.jpg" onerror="this.outerHTML='<span style=font-size:24px>${p.fallbackIcon}</span>'"/></div>
-        <div class="product-thumb"><span style="font-size:24px;">📦</span></div>
-        <div class="product-thumb"><span style="font-size:24px;">🔧</span></div>
-        <div class="product-thumb"><span style="font-size:24px;">✨</span></div>
-      </div>
+
     </div>
     <div class="product-detail-info">
       <div class="product-detail-brand">${p.brand}</div>
@@ -580,4 +576,98 @@ document.addEventListener('DOMContentLoaded', ()=>{
   ['login-pass','login-email'].forEach(id=>{
     document.getElementById(id)?.addEventListener('keydown',e=>{ if(e.key==='Enter') handleLogin(); });
   });
+});
+ 
+/* ── AUTH SLIDESHOW ─────────────────────────────────────── */
+const AUTH_SLIDES = [
+  {
+    title: 'Your <span class="grad-text">Ultimate</span><br/>Gaming Store',
+    desc:  'Exclusive deals, premium gear, and a community built for champions. Sign in and start your journey.',
+    icon:  '🎮'
+  },
+  {
+    title: 'Exclusive <span class="grad-text">Deals</span><br/>Every Week',
+    desc:  'Up to 40% off on top gaming brands. Flash sales, bundle offers, and member-only discounts — every single week.',
+    icon:  '⚡'
+  },
+  {
+    title: 'Join <span class="grad-text">50K+</span><br/>Filipino Gamers',
+    desc:  'Be part of the fastest-growing gaming community in the Philippines. Trusted by pros and casual players alike.',
+    icon:  '🏆'
+  }
+];
+
+let authSlideIndex = 0;
+let authSlideTimer = null;
+
+function goToAuthSlide(index) {
+  authSlideIndex = index;
+  const title = document.querySelector('.auth-visual-copy h2');
+  const desc  = document.querySelector('.auth-visual-copy p');
+  const dots  = document.querySelectorAll('.adot');
+  const logo  = document.querySelector('.auth-center-logo');
+
+  // Spin logo 180 degrees, no return
+  if (logo) {
+    const current = parseInt(logo.dataset.rotation || 0);
+    const next = current + 180;
+    logo.dataset.rotation = next;
+    logo.style.transition = 'transform 0.6s cubic-bezier(0.34,1.56,0.64,1)';
+    logo.style.transform  = `rotate(${next}deg)`;
+  }
+
+  // Slide text out to left, update, slide in from right
+  if (title && desc) {
+    title.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+    desc.style.transition  = 'opacity 0.25s ease, transform 0.25s ease';
+    title.style.opacity    = '0';
+    title.style.transform  = 'translateX(-30px)';
+    desc.style.opacity     = '0';
+    desc.style.transform   = 'translateX(-30px)';
+
+    setTimeout(() => {
+      title.innerHTML    = AUTH_SLIDES[index].title;
+      desc.textContent   = AUTH_SLIDES[index].desc;
+
+      title.style.transform = 'translateX(30px)';
+      desc.style.transform  = 'translateX(30px)';
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          title.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+          desc.style.transition  = 'opacity 0.35s ease, transform 0.35s ease';
+          title.style.opacity    = '1';
+          title.style.transform  = 'translateX(0)';
+          desc.style.opacity     = '1';
+          desc.style.transform   = 'translateX(0)';
+        });
+      });
+    }, 260);
+  }
+
+  dots.forEach((d, i) => d.classList.toggle('active', i === index));
+}
+
+function startAuthSlideshow() {
+  // Make dots clickable
+  document.querySelectorAll('.adot').forEach((dot, i) => {
+    dot.style.cursor = 'pointer';
+    dot.onclick = () => {
+      clearInterval(authSlideTimer);
+      goToAuthSlide(i);
+      authSlideTimer = setInterval(nextAuthSlide, 3000);
+    };
+  });
+
+  authSlideTimer = setInterval(nextAuthSlide, 3000);
+}
+
+function nextAuthSlide() {
+  goToAuthSlide((authSlideIndex + 1) % AUTH_SLIDES.length);
+}
+
+// Start when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  // small delay so auth page elements are rendered
+  setTimeout(startAuthSlideshow, 500);
 });
